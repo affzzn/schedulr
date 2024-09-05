@@ -6,14 +6,15 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-  },
+  // theme: {
+  //   container: {
+  //     center: true,
+  //     padding: "2rem",
+  //     screens: {
+  //       xs: "780px",
+  //     },
+  //   },
+  // },
   plugins: [],
 };
 export default config;
