@@ -2,6 +2,7 @@
 
 import { session } from "@/libs/session";
 import Link from "next/link";
+import RightNav from "./RightNav";
 
 export default async function Header() {
   const email = await session().get("email");
@@ -21,21 +22,7 @@ export default async function Header() {
         </nav>
       </div>
 
-      {email ? (
-        <nav className="flex gap-7">
-          <Link href={"/dashboard"} className="rounded-lg border px-2">
-            Dashboard
-          </Link>
-          <Link href={"/api/logout"}>Logout</Link>
-        </nav>
-      ) : (
-        <nav className="flex gap-7">
-          <Link href={"/api/auth"}>Login</Link>
-          <Link href={"/signup"} className="rounded-lg border px-2">
-            Get Started
-          </Link>
-        </nav>
-      )}
+      <RightNav email={email} />
     </header>
   );
 }
