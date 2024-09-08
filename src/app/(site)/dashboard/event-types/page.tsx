@@ -3,6 +3,7 @@ import DashboardNav from "@/app/components/DashboardNav";
 import { session } from "@/libs/session";
 import mongoose from "mongoose";
 import { EventTypeModel } from "../../../../models/EventTypes";
+import Link from "next/link";
 
 export default async function EventTypesPage() {
   mongoose.connect(process.env.MONGODB_URI as string);
@@ -19,14 +20,15 @@ export default async function EventTypesPage() {
       <DashboardNav />
       Event Types:
       {JSON.stringify(eventTypes)}
-      create new event type
-      <form>
-        <input type="text" placeholder="title" />
-        <input type="text" placeholder="description" />
-        <input type="number" placeholder="length" />
-        <input type="text" placeholder="monday from" />
-        <input type="text" placeholder="monday to" />
-      </form>
+      <br />
+      <div className="flex justify-center mt-4">
+        <Link
+          href="/dashboard/event-types/new"
+          className="rounded-lg border border-black px-2 py-1 bg-slate-300"
+        >
+          + New Event Type
+        </Link>
+      </div>
     </>
   );
 }

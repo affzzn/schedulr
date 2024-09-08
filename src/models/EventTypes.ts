@@ -1,3 +1,4 @@
+import { FromTo, WeekdayName } from "@/libs/types";
 import mongoose from "mongoose";
 
 const FromToSchema = new mongoose.Schema({
@@ -5,12 +6,7 @@ const FromToSchema = new mongoose.Schema({
   to: String,
 });
 
-type FromTo = {
-  from: string;
-  to: string;
-};
-
-const BookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema<Record<WeekdayName, FromTo>>({
   monday: FromToSchema,
   tuesday: FromToSchema,
   wednesday: FromToSchema,
@@ -32,14 +28,7 @@ const EventTypeSchema = new mongoose.Schema<EventType>(
   { timestamps: true }
 );
 
-type WeekdayName =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
+export type BookingTimes = Record<WeekdayName, FromTo>;
 
 type EventType = {
   name: string;
@@ -47,7 +36,7 @@ type EventType = {
   title: string;
   description: string;
   length: number;
-  bookingTimes: Record<WeekdayName, FromTo>;
+  bookingTimes: BookingTimes;
 };
 
 export const EventTypeModel =
