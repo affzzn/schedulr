@@ -1,7 +1,9 @@
 "use client";
 import TimeSelect from "@/app/components/TimeSelect";
 import { BookingTimes, WeekdayName } from "@/libs/types";
+import axios from "axios";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const weekdayNames: WeekdayName[] = [
@@ -20,9 +22,27 @@ export default function EventTypeForm() {
   const [length, setLength] = useState(30);
   const [bookingTimes, setBookingTimes] = useState<BookingTimes>(null as any);
 
-  function handleFormSubmit(e: React.FormEvent) {
+  const router = useRouter();
+
+  async function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log({ title, description, length, bookingTimes });
+    // console.log({ title, description, length, bookingTimes });
+    try {
+      const response = await axios.post("/api/event-types", {
+        title,
+        description,
+        length,
+        bookingTimes,
+      });
+
+      console.log({ response });
+      if (response.data) {
+        router.push("/dashboard/event-types");
+        router.refresh();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleBookingTimeChange(

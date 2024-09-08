@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const FromToSchema = new mongoose.Schema({
   from: String,
   to: String,
+  active: Boolean,
 });
 
 const BookingSchema = new mongoose.Schema<Record<WeekdayName, FromTo>>({
