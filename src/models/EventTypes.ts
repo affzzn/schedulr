@@ -28,18 +28,7 @@ const EventTypeSchema = new mongoose.Schema<EventType>(
   { timestamps: true }
 );
 
-<<<<<<< HEAD
 export type BookingTimes = Record<WeekdayName, FromTo>;
-=======
-export type WeekdayName =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
->>>>>>> 116de8782f0944643232b864f811637490140361
 
 type EventType = {
   name: string;
