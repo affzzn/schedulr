@@ -15,18 +15,28 @@ export default async function EventTypesPage() {
   const eventTypes = await EventTypeModel.find({ email });
   console.log("eventTypes");
   console.log(eventTypes);
+
   return (
     <>
       <DashboardNav />
       Event Types:
-      {JSON.stringify(eventTypes)}
+      {/* {JSON.stringify(eventTypes)} */}
       <br />
+      <div className="mt-4 border border-b-2 border-sky-950 rounded-xl overflow-hidden mb-4 ml-2 mr-2">
+        {eventTypes.map((evt) => (
+          <div key={evt.id} className="block p-2 border-b border-gray-400">
+            <Link href={"/dashboard/event-types/edit/" + evt.id}>
+              {evt.title}
+            </Link>
+          </div>
+        ))}
+      </div>
       <div className="flex justify-center mt-4">
         <Link
           href="/dashboard/event-types/new"
-          className="rounded-lg border border-black px-2 py-1 bg-slate-300"
+          className="rounded-lg border border-black px-2 py-1 bg-slate-300 m-3"
         >
-          + New Event Type
+          + Create New Event
         </Link>
       </div>
     </>
