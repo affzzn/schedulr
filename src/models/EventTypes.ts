@@ -32,7 +32,7 @@ const EventTypeSchema = new mongoose.Schema<EventType>(
   { timestamps: true }
 );
 
-type WeekdayName =
+export type WeekdayName =
   | "monday"
   | "tuesday"
   | "wednesday"
