@@ -6,10 +6,8 @@ import { NextRequest } from "next/server";
 export async function PUT(req: NextRequest) {
   await mongoose.connect(process.env.MONGODB_URI as string);
   const body = await req.json();
-
   const { username } = body;
   const email = await session().get("email");
-
   if (email && username) {
     const profileDoc = await ProfileModel.findOne({ email });
     if (profileDoc) {

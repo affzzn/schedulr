@@ -1,8 +1,7 @@
 "use client";
-
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export default function ProfileForm({
   existingUsername = "",
@@ -12,11 +11,11 @@ export default function ProfileForm({
   const [username, setUsername] = useState(existingUsername);
   const [isSaved, setIsSaved] = useState(false);
   const [isError, setIsError] = useState(false);
-
   const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  async function handleSubmit(ev: FormEvent) {
+    ev.preventDefault();
+    setIsSaved(false);
+    setIsError(false);
     const response = await axios.put("/api/profile", { username });
     if (response.data) {
       setIsSaved(true);
@@ -27,27 +26,27 @@ export default function ProfileForm({
     } else {
       setIsError(true);
     }
-  };
+  }
   return (
-    <>
-      <form className="max-w-xs mx-auto mt-8" onSubmit={handleSubmit}>
-        {isSaved && <div className="text-green-500">Saved!</div>}
-        {isError && <div className="text-red-500">Error!</div>}
-        <label>
-          <span>Username</span>
-          <input
-            type="text"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-          />
+    <form onSubmit={handleSubmit} className="max-w-xs mx-auto mt-8">
+      {isSaved && <div className="text-green-500">Saved!</div>}
+      {isError && <div className="text-red-500">Error!</div>}
+      <label>
+        <span>Username</span>
+        <input
+          type="text"
+          value={username}
+          onChange={(ev) => setUsername(ev.target.value)}
+        />
+        <div className="text-center mt-4">
           <button
             type="submit"
             className="bg-gray-700 text-white !px-8 py-2 rounded-full m-5 text-xl"
           >
-            save
+            Save
           </button>
-        </label>
-      </form>
-    </>
+        </div>
+      </label>
+    </form>
   );
 }

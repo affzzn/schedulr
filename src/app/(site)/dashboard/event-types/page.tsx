@@ -24,11 +24,6 @@ export default async function EventTypesPage() {
       <div className="mt-7 mb-4 flex justify-center">
         <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
           <table className="min-w-full table-auto">
-            {/* <thead className="bg-gray-200">
-              <tr>
-                <th className="px-4 py-2 text-left text-gray-700">Events</th>
-              </tr>
-            </thead> */}
             <tbody>
               {eventTypes.map((evt) => (
                 <tr
