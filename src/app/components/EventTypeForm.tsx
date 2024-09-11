@@ -4,7 +4,6 @@ import { BookingTimes, WeekdayName } from "@/libs/types";
 import { IEventType } from "@/models/EventTypes";
 import axios from "axios";
 import clsx from "clsx";
-import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EventTypeDelete from "./EventTypeDelete";
