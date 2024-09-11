@@ -1,10 +1,13 @@
 "use client";
 import TimeSelect from "@/app/components/TimeSelect";
 import { BookingTimes, WeekdayName } from "@/libs/types";
+import { IEventType } from "@/models/EventTypes";
 import axios from "axios";
 import clsx from "clsx";
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import EventTypeDelete from "./EventTypeDelete";
 
 const weekdayNames: WeekdayName[] = [
   "monday",
@@ -16,24 +19,38 @@ const weekdayNames: WeekdayName[] = [
   "sunday",
 ];
 
-export default function EventTypeForm() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [length, setLength] = useState(30);
-  const [bookingTimes, setBookingTimes] = useState<BookingTimes>(null as any);
+export default function EventTypeForm({ doc }: { doc?: IEventType }) {
+  const [title, setTitle] = useState(doc?.title || "");
+  const [description, setDescription] = useState(doc?.description || "");
+  const [length, setLength] = useState(doc?.length || 30);
+  const [bookingTimes, setBookingTimes] = useState<BookingTimes>(
+    doc?.bookingTimes || {}
+  );
 
   const router = useRouter();
 
   async function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault();
     // console.log({ title, description, length, bookingTimes });
+
     try {
-      const response = await axios.post("/api/event-types", {
-        title,
-        description,
-        length,
-        bookingTimes,
-      });
+      // if (doc?._id) {
+      // edit the event type
+      //   axios.put(`/api/event-types/${doc._id}`, {});
+      // }
+
+      // const response = await axios.post("/api/event-types", {
+      //   title,
+      //   description,
+      //   length,
+      //   bookingTimes,
+      // });
+
+      const id = doc?._id;
+      const request = id ? axios.put : axios.post;
+
+      const data = { title, description, length, bookingTimes };
+      const response = await request("/api/event-types", { ...data, id });
 
       console.log({ response });
       if (response.data) {
@@ -62,20 +79,7 @@ export default function EventTypeForm() {
       return newBookingTimes;
     });
   }
-  //   const handleBookingTimeChange = (
-  //     day: WeekdayName,
-  //     val: string | boolean,
-  //     props: "from" | "to" | "active"
-  //   ) => {
-  //     setBookingTimes((oldBookingTimes) => {
-  //       const newBookingTimes: BookingTimes = { ...oldBookingTimes };
-  //       if (!newBookingTimes[day]) {
-  //         newBookingTimes[day] = { from: "00:00", to: "00:00" };
-  //       }
-  //       newBookingTimes[day][props] = val;
-  //       return newBookingTimes;
-  //     });
-  //   };
+
   return (
     <form
       className="gap-5 p-2 rounded-lg bg-slate-300"
@@ -173,6 +177,7 @@ export default function EventTypeForm() {
         >
           Save
         </button>
+        {doc && <EventTypeDelete id={doc._id as string} />}
       </div>
     </form>
   );
