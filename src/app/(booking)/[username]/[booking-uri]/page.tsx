@@ -1,3 +1,4 @@
+import TimePicker from "@/app/components/TimePicker";
 import { EventTypeModel } from "@/models/EventTypes";
 import { ProfileModel } from "@/models/Profile";
 import mongoose from "mongoose";
@@ -23,39 +24,36 @@ export default async function BookingPage(props: PageProps) {
     uri: props.params?.["booking-uri"],
   });
 
-  console.log("propss", props);
-
   if (!eventDoc) {
     return "404";
   }
 
   return (
-    <div>
-      <h1>Booking Page</h1>
-      {/* {JSON.stringify(props)}
-      {JSON.stringify(eventDoc)} */}
-
-      <div className="flex items-center h-screen">
-        <div className="w-full">
-          <div className="mx-auto max-w-lg  shadow-lg rounded-xl flex">
-            <div className="p-4 w-64 text-sm bg-slate-300">
-              <h1 className="text-lg font-bold mb-4 border-b border-gray-600">
-                {eventDoc?.title}
-              </h1>
-              <div className="grid gap-y-2 grid-cols-[40px_1fr]">
-                <div>
-                  <FaRegClock />
-                </div>
-                <div>{eventDoc?.length} minutes</div>
-
-                <div>
-                  <FiInfo />
-                </div>
-                <div>{eventDoc?.description}</div>
-              </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="max-w-lg w-full bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="p-6 bg-slate-300">
+          <h1 className="text-xl font-bold mb-4 border-b border-gray-600">
+            {eventDoc?.title}
+          </h1>
+          <div className="grid gap-y-2 grid-cols-[40px_1fr] text-sm">
+            <div className="flex items-center justify-center text-gray-600">
+              <FaRegClock />
             </div>
-            <div className="bg-white grow p-8">right</div>
+            <div>{eventDoc?.length} minutes</div>
+
+            <div className="flex items-center justify-center text-gray-600">
+              <FiInfo />
+            </div>
+            <div>{eventDoc?.description}</div>
           </div>
+        </div>
+        <div className="p-8">
+          <TimePicker
+            username={props.params.username}
+            meetingUri={eventDoc.uri}
+            length={eventDoc.length}
+            bookingTimes={JSON.parse(JSON.stringify(eventDoc.bookingTimes))}
+          />
         </div>
       </div>
     </div>

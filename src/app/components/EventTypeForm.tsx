@@ -8,16 +8,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EventTypeDelete from "./EventTypeDelete";
 import { MdContentCopy } from "react-icons/md";
+import { weekdayNames } from "@/libs/shared";
 
-const weekdayNames: WeekdayName[] = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
-];
+// const weekdayNames: WeekdayName[] = [
+//   "monday",
+//   "tuesday",
+//   "wednesday",
+//   "thursday",
+//   "friday",
+//   "saturday",
+//   "sunday",
+// ];
 
 export default function EventTypeForm({
   doc,
