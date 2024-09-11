@@ -4,9 +4,15 @@ import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
+function uriFromTitle(title: string): string {
+  return title.replace(/\s+/g, "-").toLowerCase();
+}
+
 export async function POST(req: NextRequest) {
   await mongoose.connect(process.env.MONGODB_URI as string);
   const data = await req.json();
+  data.uri = uriFromTitle(data.title);
+
   const email = await session().get("email");
   console.log("email: ", email);
 
@@ -22,6 +28,7 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   await mongoose.connect(process.env.MONGODB_URI as string);
   const data = await req.json();
+  data.uri = uriFromTitle(data.title);
   const email = await session().get("email");
   console.log("email: ", email);
 

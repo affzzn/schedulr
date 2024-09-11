@@ -84,7 +84,12 @@ export default function EventTypeForm({ doc }: { doc?: IEventType }) {
       className="gap-5 p-2 rounded-lg bg-slate-300"
       onSubmit={handleFormSubmit}
     >
-      create new event type:
+      {/* create new event type: */}
+      {doc && (
+        <p className="my-3 text-sm">
+          URL: {`${process.env.NEXT_PUBLIC_URL}/username/${doc.uri}`}
+        </p>
+      )}
       <div className="grid grid-cols-2 gap-5">
         <div>
           <label>

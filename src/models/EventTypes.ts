@@ -20,6 +20,7 @@ const BookingSchema = new mongoose.Schema<Record<WeekdayName, FromTo>>({
 const EventTypeSchema = new mongoose.Schema<IEventType>(
   {
     email: String,
+    uri: String,
     title: String,
     description: String,
     length: Number,
