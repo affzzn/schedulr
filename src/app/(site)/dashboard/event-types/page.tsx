@@ -4,19 +4,22 @@ import { session } from "@/libs/session";
 import mongoose from "mongoose";
 import { EventTypeModel } from "../../../../models/EventTypes";
 import Link from "next/link";
+import { ProfileModel } from "@/models/Profile";
 
 export default async function EventTypesPage() {
   await mongoose.connect(process.env.MONGODB_URI as string);
   const email = await session().get("email");
-  if (!email) {
-    return { redirect: "/login" };
-  }
+  // if (!email) {
+  //   return { redirect: "/login" };
+  // }
 
   const eventTypes = await EventTypeModel.find({ email });
 
+  const profile = await ProfileModel.findOne({ email });
+
   return (
     <>
-      <DashboardNav />
+      {/* <DashboardNav /> */}
 
       <div className="mt-7 mb-4 flex justify-center">
         <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
@@ -41,7 +44,8 @@ export default async function EventTypesPage() {
                     </Link>
                     <div className="text-gray-500">
                       <span>
-                        {process.env.NEXT_PUBLIC_URL}/username/{evt.uri}
+                        {process.env.NEXT_PUBLIC_URL}/{profile?.username}/
+                        {evt.uri}
                       </span>
                     </div>
                   </td>

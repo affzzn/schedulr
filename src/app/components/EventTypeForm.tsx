@@ -18,7 +18,13 @@ const weekdayNames: WeekdayName[] = [
   "sunday",
 ];
 
-export default function EventTypeForm({ doc }: { doc?: IEventType }) {
+export default function EventTypeForm({
+  doc,
+  username = "",
+}: {
+  doc?: IEventType;
+  username?: string;
+}) {
   const [title, setTitle] = useState(doc?.title || "");
   const [description, setDescription] = useState(doc?.description || "");
   const [length, setLength] = useState(doc?.length || 30);
@@ -87,7 +93,7 @@ export default function EventTypeForm({ doc }: { doc?: IEventType }) {
       {/* create new event type: */}
       {doc && (
         <p className="my-3 text-sm">
-          URL: {`${process.env.NEXT_PUBLIC_URL}/username/${doc.uri}`}
+          URL: {`${process.env.NEXT_PUBLIC_URL}/${username}/${doc.uri}`}
         </p>
       )}
       <div className="grid grid-cols-2 gap-5">
