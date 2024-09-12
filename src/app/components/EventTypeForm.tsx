@@ -55,7 +55,8 @@ export default function EventTypeForm({
         newBookingTimes[day] = { from: "00:00", to: "00:00", active: false };
       }
 
-      // @ts-expect-error
+      // @ts-expect-error: The 'prop' may vary between 'from', 'to', or 'active' and TypeScript cannot infer it dynamically.
+
       newBookingTimes[day][prop] = val;
 
       return newBookingTimes;

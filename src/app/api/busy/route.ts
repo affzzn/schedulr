@@ -30,9 +30,9 @@ export async function GET(req: NextRequest) {
 
   let busySlots: TimeSlot[] = [];
   if (nylasBusyResult.data?.[0]) {
-    // @ts-expect-error
+    // @ts-expect-error: TimeSlot type may be mismatched from the API response.
     const slots = nylasBusyResult.data?.[0]?.timeSlots as TimeSlot[];
-    // @ts-expect-error
+    // @ts-expect-error: Filter requires manual handling of undefined types in the slots array.
     busySlots = slots.filter((slot) => slot.status === "busy");
   }
 

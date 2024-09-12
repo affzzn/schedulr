@@ -74,7 +74,7 @@ export default function TimePicker({
     };
 
     checkBusySlots();
-  }, [selectedDay]);
+  }, [selectedDay, username]);
 
   function withinBusySlots(time: Date) {
     const bookingFrom = time;
