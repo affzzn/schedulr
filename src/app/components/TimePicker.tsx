@@ -43,7 +43,7 @@ export default function TimePicker({
   const [activeYear, setActiveYear] = useState(activeMonthDate.getFullYear());
   const [selectedDay, setSelectedDay] = useState<null | Date>(null);
   const [busySlots, setBusySlots] = useState<TimeSlot[]>([]);
-  const [busySlotsLoaded, setBusySlotsLoaded] = useState(true);
+  const [busySlotsLoaded, setBusySlotsLoaded] = useState(true); // temp
 
   //
 
@@ -206,7 +206,7 @@ export default function TimePicker({
         </div>
       </div>
       {selectedDay && (
-        <div className="pt-4 md:pt-0 md:pl-9 w-full md:w-1/2">
+        <div className="pt-4 md:pt-0 md:pl-12 w-full md:w-1/2">
           <p className="text-sm mb-2">{format(selectedDay, "EEEE, MMMM d")}</p>
           <div className="grid gap-2 max-h-52 overflow-auto">
             {!busySlotsLoaded && (
@@ -219,7 +219,7 @@ export default function TimePicker({
                 <div key={bookingTime.toISOString()}>
                   <Link
                     href={`/${username}/${meetingUri}/${bookingTime.toISOString()}`}
-                    className="block border-2 rounded-lg border-blue-600 text-blue-600 font-semibold p-2 hover:bg-blue-50"
+                    className="block border-2 rounded-lg border-blue-900 text-blue-900 font-semibold p-2 hover:bg-blue-50"
                   >
                     {format(bookingTime, "HH:mm")}
                   </Link>

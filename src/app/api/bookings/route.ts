@@ -1,8 +1,11 @@
+import { nylas } from "@/libs/nylas";
 import { BookingModel } from "@/models/Booking";
 import { EventTypeModel } from "@/models/EventTypes";
 import { ProfileModel } from "@/models/Profile";
+import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
 import { NextRequest } from "next/server";
+import { WhenType } from "nylas";
 
 type JsonData = {
   guestName: string;
@@ -40,6 +43,37 @@ export async function POST(req: NextRequest) {
   });
 
   //   create this event calender
+
+  const grantId = profileDoc.grantId;
+
+  const startDate = new Date(bookingTime);
+  await nylas.events.create({
+    identifier: grantId,
+    requestBody: {
+      title: eventDoc.title,
+      description: eventDoc.description,
+      when: {
+        startTime: Math.round(startDate.getTime() / 1000),
+        endTime: Math.round(
+          addMinutes(startDate, eventDoc.length).getTime() / 1000
+        ),
+      },
+      conferencing: {
+        autocreate: {},
+        provider: "Google Meet",
+      },
+      participants: [
+        {
+          name: guestName,
+          email: guestEmail,
+          status: "yes",
+        },
+      ],
+    },
+    queryParams: {
+      calendarId: eventDoc.email,
+    },
+  });
 
   return Response.json(true, { status: 201 });
 }
