@@ -1,5 +1,7 @@
 import { nylas, nylasConfig } from "@/libs/nylas";
 import { session } from "@/libs/session";
+import { ProfileModel } from "@/models/Profile";
+import mongoose from "mongoose";
 import { NextApiRequest } from "next";
 import { redirect } from "next/navigation";
 
@@ -38,8 +40,18 @@ export async function GET(req: NextApiRequest) {
   // In a real app you would store this in a database, associated with a user
   //   process.env.NYLAS_GRANT_ID = grantId;
 
-  await session().set("grantId", grantId);
   await session().set("email", email);
+
+  await mongoose.connect(process.env.MONGODB_URI as string);
+
+  const profileDoc = await ProfileModel.findOne({ email });
+
+  if (profileDoc) {
+    profileDoc.grantId = grantId;
+    await profileDoc.save();
+  } else {
+    await ProfileModel.create({ email, grantId });
+  }
 
   redirect("/");
 }
