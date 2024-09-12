@@ -3,7 +3,7 @@ import { session } from "@/libs/session";
 import { ProfileModel } from "@/models/Profile";
 import mongoose from "mongoose";
 import { NextRequest } from "next/server";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 export async function GET(req: NextRequest) {
   console.log("Received callback from Nylas");
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const code = url.searchParams.get("code");
 
   if (!code) {
-    return Response.json("No authorization code returned from Nylas", {
+    return new Response("No authorization code returned from Nylas", {
       status: 400,
     });
   }
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   const clientSecret = nylasConfig.apiKey;
 
   if (!clientId || !clientSecret) {
-    return Response.json("Nylas client ID or API key is missing", {
+    return new Response("Nylas client ID or API key is missing", {
       status: 500,
     });
   }
@@ -33,25 +33,95 @@ export async function GET(req: NextRequest) {
     code,
   };
 
-  const response = await nylas.auth.exchangeCodeForToken(codeExchangePayload);
-  const { grantId, email } = response;
+  try {
+    const response = await nylas.auth.exchangeCodeForToken(codeExchangePayload);
+    const { grantId, email } = response;
 
-  // NB: This stores in RAM
-  // In a real app you would store this in a database, associated with a user
-  //   process.env.NYLAS_GRANT_ID = grantId;
+    // NB: This stores in RAM
+    // In a real app you would store this in a database, associated with a user
+    //   process.env.NYLAS_GRANT_ID = grantId;
 
-  await session().set("email", email);
+    await session().set("email", email);
 
-  await mongoose.connect(process.env.MONGODB_URI as string);
+    await mongoose.connect(process.env.MONGODB_URI as string);
 
-  const profileDoc = await ProfileModel.findOne({ email });
+    const profileDoc = await ProfileModel.findOne({ email });
 
-  if (profileDoc) {
-    profileDoc.grantId = grantId;
-    await profileDoc.save();
-  } else {
-    await ProfileModel.create({ email, grantId });
+    if (profileDoc) {
+      profileDoc.grantId = grantId;
+      await profileDoc.save();
+    } else {
+      await ProfileModel.create({ email, grantId });
+    }
+
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/",
+      },
+    });
+  } catch (error) {
+    console.error("Error during Nylas callback processing:", error);
+    return new Response("Internal Server Error", {
+      status: 500,
+    });
   }
-
-  redirect("/");
 }
+
+// import { nylas, nylasConfig } from "@/libs/nylas";
+// import { session } from "@/libs/session";
+// import { ProfileModel } from "@/models/Profile";
+// import mongoose from "mongoose";
+// import { NextRequest } from "next/server";
+// import { redirect } from "next/navigation";
+
+// export async function GET(req: NextRequest) {
+//   console.log("Received callback from Nylas");
+//   const url = new URL(req.url as string);
+//   const code = url.searchParams.get("code");
+
+//   if (!code) {
+//     return Response.json("No authorization code returned from Nylas", {
+//       status: 400,
+//     });
+//   }
+
+//   // Ensure clientId and clientSecret (apiKey) are defined
+//   const clientId = nylasConfig.clientId;
+//   const clientSecret = nylasConfig.apiKey;
+
+//   if (!clientId || !clientSecret) {
+//     return Response.json("Nylas client ID or API key is missing", {
+//       status: 500,
+//     });
+//   }
+
+//   const codeExchangePayload = {
+//     clientSecret,
+//     clientId,
+//     redirectUri: nylasConfig.callbackUri,
+//     code,
+//   };
+
+//   const response = await nylas.auth.exchangeCodeForToken(codeExchangePayload);
+//   const { grantId, email } = response;
+
+//   // NB: This stores in RAM
+//   // In a real app you would store this in a database, associated with a user
+//   //   process.env.NYLAS_GRANT_ID = grantId;
+
+//   await session().set("email", email);
+
+//   await mongoose.connect(process.env.MONGODB_URI as string);
+
+//   const profileDoc = await ProfileModel.findOne({ email });
+
+//   if (profileDoc) {
+//     profileDoc.grantId = grantId;
+//     await profileDoc.save();
+//   } else {
+//     await ProfileModel.create({ email, grantId });
+//   }
+
+//   redirect("/");
+// }
