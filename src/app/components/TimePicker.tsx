@@ -143,7 +143,7 @@ export default function TimePicker({
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="p-4 w-full md:w-1/2">
+      <div className="p-4 w-full md:w-3/5">
         <div className="flex items-center justify-between mb-4">
           <span className="text-lg font-semibold">
             {format(new Date(activeYear, activeMonthIndex, 1), "MMMM")}{" "}
@@ -164,7 +164,7 @@ export default function TimePicker({
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-7 gap-2 text-center text-sm text-gray-500">
+        <div className="grid grid-cols-7 gap-x-10 text-center text-sm text-gray-500">
           {weekdayNamesShort.map((w) => (
             <div key={w} className="font-bold uppercase">
               {w}
@@ -206,7 +206,7 @@ export default function TimePicker({
         </div>
       </div>
       {selectedDay && (
-        <div className="pt-4 md:pt-0 md:pl-4 w-full md:w-1/2">
+        <div className="pt-4 md:pt-0 md:pl-9 w-full md:w-1/2">
           <p className="text-sm mb-2">{format(selectedDay, "EEEE, MMMM d")}</p>
           <div className="grid gap-2 max-h-52 overflow-auto">
             {!busySlotsLoaded && (
