@@ -5,16 +5,16 @@ import { ProfileModel } from "@/models/Profile";
 import { addMinutes } from "date-fns";
 import mongoose from "mongoose";
 import { NextRequest } from "next/server";
-import { WhenType } from "nylas";
+// import { WhenType } from "nylas";
 
-type JsonData = {
-  guestName: string;
-  guestEmail: string;
-  guestNotes: string;
-  username: string;
-  bookingUri: string;
-  bookingTime: string;
-};
+// type JsonData = {
+//   guestName: string;
+//   guestEmail: string;
+//   guestNotes: string;
+//   username: string;
+//   bookingUri: string;
+//   bookingTime: string;
+// };
 
 export async function POST(req: NextRequest) {
   await mongoose.connect(process.env.MONGODB_URI as string);
@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
     when: bookingTime,
     eventTypeId: eventDoc._id,
   });
+
+  booking.save();
 
   //   create this event calender
 

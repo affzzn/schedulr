@@ -2,8 +2,8 @@ import TimePicker from "@/app/components/TimePicker";
 import { EventTypeModel } from "@/models/EventTypes";
 import { ProfileModel } from "@/models/Profile";
 import mongoose from "mongoose";
-import { FaRegClock } from "react-icons/fa";
-import { FiInfo } from "react-icons/fi";
+// import { FaRegClock } from "react-icons/fa";
+// import { FiInfo } from "react-icons/fi";
 
 type PageProps = {
   params: {

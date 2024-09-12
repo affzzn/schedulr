@@ -7,7 +7,7 @@ import { TimeSlot } from "nylas";
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const username = url.searchParams.get("username");
-  const bookingUri = url.searchParams.get("booking-uri");
+  // const bookingUri = url.searchParams.get("booking-uri");
   const from = new Date(url.searchParams.get("from") as string);
   const to = new Date(url.searchParams.get("to") as string);
 
@@ -30,9 +30,9 @@ export async function GET(req: NextRequest) {
 
   let busySlots: TimeSlot[] = [];
   if (nylasBusyResult.data?.[0]) {
-    // @ts-ignore
+    // @ts-expect-error
     const slots = nylasBusyResult.data?.[0]?.timeSlots as TimeSlot[];
-    // @ts-ignore
+    // @ts-expect-error
     busySlots = slots.filter((slot) => slot.status === "busy");
   }
 

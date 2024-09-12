@@ -3,7 +3,7 @@ import { BookingModel } from "@/models/Booking";
 import { EventTypeModel } from "@/models/EventTypes";
 
 import { format } from "date-fns";
-import { Calendar, CircleUser, NotepadText, User } from "lucide-react";
+import { Calendar, CircleUser, NotepadText } from "lucide-react";
 import mongoose from "mongoose";
 
 export default async function DashboardPage() {

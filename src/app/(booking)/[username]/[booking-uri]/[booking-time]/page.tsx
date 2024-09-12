@@ -34,6 +34,7 @@ export default function BookingFormPage(props: PageProps) {
       bookingUri,
       bookingTime,
     });
+    console.log(response.data);
     setConfirmed(true);
   };
 
