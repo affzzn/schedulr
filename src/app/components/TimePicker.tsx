@@ -24,6 +24,7 @@ import {
 } from "date-fns";
 import clsx from "clsx";
 import axios from "axios";
+import { BeatLoader } from "react-spinners";
 
 export default function TimePicker({
   bookingTimes,
@@ -240,6 +241,7 @@ export default function TimePicker({
             {!busySlotsLoaded && (
               <div className="flex justify-center py-4">
                 {/* <PulseLoader color="#3B82F6" /> */}
+                <BeatLoader color="#3B82F6" />
               </div>
             )}
             {busySlotsLoaded &&
