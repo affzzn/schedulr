@@ -1,8 +1,7 @@
 {
-    "functions": {
-      "api/**.ts": {
-        "maxDuration": 45
-      }
+  "functions": {
+    "src/api/**/*.ts": {
+      "maxDuration": 45
     }
   }
-  
+}
