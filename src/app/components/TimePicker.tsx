@@ -3,7 +3,7 @@
 import { BookingTimes, WeekdayName } from "@/libs/types";
 import { weekdayNames, weekdayNamesShort } from "@/libs/shared";
 import { TimeSlot } from "nylas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import {
@@ -23,6 +23,7 @@ import {
   subMonths,
 } from "date-fns";
 import clsx from "clsx";
+import axios from "axios";
 
 export default function TimePicker({
   bookingTimes,
@@ -43,9 +44,36 @@ export default function TimePicker({
   const [activeYear, setActiveYear] = useState(activeMonthDate.getFullYear());
   const [selectedDay, setSelectedDay] = useState<null | Date>(null);
   const [busySlots, setBusySlots] = useState<TimeSlot[]>([]);
-  const [busySlotsLoaded, setBusySlotsLoaded] = useState(true); // temp
+  const [busySlotsLoaded, setBusySlotsLoaded] = useState(false); //
 
   //
+
+  useEffect(() => {
+    const checkBusySlots = async () => {
+      if (selectedDay) {
+        setBusySlots([]); // Clear busySlots when a new day is selected
+        setBusySlotsLoaded(false); // Start loading state
+        const params = new URLSearchParams();
+        params.set("username", username);
+        params.set("from", startOfDay(selectedDay).toISOString());
+        params.set("to", endOfDay(selectedDay).toISOString());
+
+        try {
+          const response = await axios.get(`/api/busy?${params.toString()}`);
+          setBusySlotsLoaded(true);
+
+          // Ensure response.data is an array
+          setBusySlots(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+          console.error("Failed to fetch busy slots:", error);
+          setBusySlotsLoaded(true);
+          setBusySlots([]); // In case of an error, set to empty array
+        }
+      }
+    };
+
+    checkBusySlots();
+  }, [selectedDay]);
 
   function withinBusySlots(time: Date) {
     const bookingFrom = time;
