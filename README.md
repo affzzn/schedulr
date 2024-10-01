@@ -16,8 +16,7 @@ Schedulr is a scheduling platform built with **Next.js**, **MongoDB**, and **Typ
 - **TypeScript**: Type safety for both the backend and frontend.
 - **MongoDB**: NoSQL database for storing user and scheduling data.
 - **Nylas API**: Integration with Google Calendar for managing events and availability.
-- **Nodemailer** (optional): For sending reminder emails for appointments.
-
+  
 ## Installation
 
 To set up this project locally, follow the steps below:
